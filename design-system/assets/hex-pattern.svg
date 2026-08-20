@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="208" viewBox="0 0 240 208">
+<defs>
+<pattern id="hex" width="60" height="104" patternUnits="userSpaceOnUse">
+<g fill="none" stroke="#ffffff" stroke-width="1" opacity="0.09">
+<polygon points="30,0 55,17 55,52 30,69 5,52 5,17"></polygon>
+<polygon points="0,52 25,69 25,104 0,121 -25,104 -25,69"></polygon>
+<polygon points="60,52 85,69 85,104 60,121 35,104 35,69"></polygon>
+</g>
+</pattern>
+</defs>
+<rect width="240" height="208" fill="url(#hex)"></rect>
+</svg>

@@ -1,0 +1,98 @@
+<!-- @dsCard group="Dashboard" viewport="1440x860" name="Dashboard — Visão Geral" subtitle="Painel financeiro executivo" -->
+<!-- @startingPoint section="Dashboard" subtitle="Painel financeiro executivo com KPIs, gráfico e transações" viewport="1440x860" -->
+<!doctype html><html><head><meta charset="utf-8"><title>Valandro Gestão — Dashboard</title>
+<link rel="stylesheet" href="../../../../design-system/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../../../design-system/_ds_bundle.js"></script>
+<style>*{box-sizing:border-box}body{margin:0;background:var(--gray-25)}a{color:var(--text-link)}a:hover{color:var(--text-link-hover)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel" src="Sidebar.jsx"></script>
+<script type="text/babel" src="TopBar.jsx"></script>
+<script type="text/babel" src="CashflowChart.jsx"></script>
+<script type="text/babel">
+const { Card, Badge, Tabs, Button, Select } = window.ValandroGestODesignSystem_e4cc4d;
+
+const kpis = [
+  { label: 'Receita do mês', value: 'R$ 128.400', delta: '+12% vs. jun', tone: 'positive' },
+  { label: 'Despesas do mês', value: 'R$ 74.900', delta: '+3% vs. jun', tone: 'warning' },
+  { label: 'Resultado (Lucro)', value: 'R$ 53.500', delta: '+18% vs. jun', tone: 'positive' },
+  { label: 'Saldo em caixa', value: 'R$ 212.300', delta: 'projeção 30d positiva', tone: 'positive' },
+];
+
+const transactions = [
+  { desc: 'Recebimento — Cliente Mérida Ltda', date: '24/07/2026', value: '+ R$ 18.200', tone: 'positive' },
+  { desc: 'Pagamento — Folha de pagamento', date: '22/07/2026', value: '– R$ 31.400', tone: 'negative' },
+  { desc: 'Recebimento — Cliente Ourofino', date: '19/07/2026', value: '+ R$ 9.850', tone: 'positive' },
+  { desc: 'Pagamento — Fornecedor logística', date: '15/07/2026', value: '– R$ 6.120', tone: 'negative' },
+  { desc: 'Recebimento — Cliente Bravante', date: '12/07/2026', value: '+ R$ 22.000', tone: 'positive' },
+];
+
+function Overview() {
+  return (
+    <React.Fragment>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, padding: '20px 32px 0' }}>
+        {kpis.map((k) => (
+          <Card key={k.label}>
+            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>{k.label}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)' }}>{k.value}</div>
+            <div style={{ marginTop: 10 }}><Badge tone={k.tone}>{k.delta}</Badge></div>
+          </Card>
+        ))}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 16, padding: '16px 32px 32px' }}>
+        <Card title="Fluxo de caixa" subtitle="Últimos 12 meses">
+          <window.CashflowChart />
+        </Card>
+        <Card title="Transações recentes">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {transactions.map((t, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', paddingBottom: 10, borderBottom: i < transactions.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
+                <div>
+                  <div style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>{t.desc}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{t.date}</div>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: t.tone === 'positive' ? 'var(--status-positive)' : 'var(--status-negative)' }}>{t.value}</div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </React.Fragment>
+  );
+}
+
+function CashflowView() {
+  return (
+    <div style={{ padding: '20px 32px 32px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <Card title="Projeção de fluxo de caixa" subtitle="Confirmado vs. previsto — próximos 90 dias">
+        <window.CashflowChart />
+      </Card>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+        <Card title="Entradas previstas"><div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800 }}>R$ 186.000</div></Card>
+        <Card title="Saídas previstas"><div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800 }}>R$ 121.400</div></Card>
+        <Card title="Saldo projetado"><div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--status-positive)' }}>R$ 64.600</div></Card>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tab, setTab] = React.useState('overview');
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--font-body)' }}>
+      <window.Sidebar active={tab} />
+      <div style={{ flex: 1 }}>
+        <window.TopBar title="Olá, Ana" subtitle="Aqui está o resumo financeiro da sua empresa hoje." />
+        <div style={{ padding: '20px 32px 0' }}>
+          <Tabs items={[{ label: 'Visão Geral', value: 'overview' }, { label: 'Fluxo de Caixa', value: 'cashflow' }]} active={tab === 'cashflow' ? 'cashflow' : 'overview'} onChange={setTab} />
+        </div>
+        {tab === 'cashflow' ? <CashflowView /> : <Overview />}
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body></html>

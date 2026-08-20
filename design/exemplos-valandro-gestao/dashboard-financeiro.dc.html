@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../design-system/tokens/colors.css">
+<link rel="stylesheet" href="../../design-system/tokens/typography.css">
+<link rel="stylesheet" href="../../design-system/tokens/spacing.css">
+<link rel="stylesheet" href="../../design-system/tokens/effects.css">
+<link rel="stylesheet" href="../../design-system/styles.css">
+<script src="../../design-system/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--gray-25);font-family:var(--font-body)}
+a{color:var(--text-link)}
+a:hover{color:var(--text-link-hover)}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+  <div style="background:var(--navy-900);position:relative;overflow:hidden;padding:22px 36px;display:flex;justify-content:space-between;align-items:center">
+    <img src="../../design-system/assets/photo-office-real.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.18" alt="">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,30,46,0.85),rgba(10,30,46,0.7))"></div>
+    <div style="position:relative">
+      <div style="font-family:var(--font-display);font-style:italic;font-weight:600;font-size:14px;color:var(--blue-300)">— Painel Financeiro</div>
+      <div style="font-family:var(--font-display);font-weight:800;font-size:22px;color:#fff;margin-top:6px;letter-spacing:var(--tracking-tight)">Visão geral — Julho 2026</div>
+    </div>
+    <div style="position:relative;display:flex;gap:12px;align-items:center">
+      <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Select" hint-size="150px,40px" value="{{ period }}" onChange="{{ setPeriod }}" options="{{ periodOptions }}"></x-import>
+      <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Button" hint-size="auto,40px" variant="primary" size="md">Exportar relatório</x-import>
+    </div>
+  </div>
+
+  <div style="padding:24px 36px 0">
+    <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Tabs" hint-size="auto,40px" items="{{ tabItems }}" active="{{ tab }}" onChange="{{ setTab }}"></x-import>
+  </div>
+
+  <div style="padding:20px 36px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+      <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Card" hint-size="100%,120px">
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">{{ k.label }}</div>
+        <div style="font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--text-primary)">{{ k.value }}</div>
+        <div style="margin-top:10px">
+          <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Badge" hint-size="auto,24px" tone="{{ k.tone }}">{{ k.delta }}</x-import>
+        </div>
+        <sc-if value="{{ k.note }}" hint-placeholder-val="{{ false }}">
+          <div style="font-family:var(--font-display);font-style:italic;font-size:12px;color:var(--text-secondary);margin-top:8px;line-height:1.4">{{ k.note }}</div>
+        </sc-if>
+      </x-import>
+    </sc-for>
+  </div>
+
+  <div style="padding:0 36px 24px;display:grid;grid-template-columns:1.6fr 1fr;gap:16px;flex:1">
+    <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Card" hint-size="100%,320px">
+      <div style="font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:2px">Fluxo de caixa</div>
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Confirmado vs. previsto — últimos 6 meses</div>
+      <div style="display:flex;align-items:flex-end;gap:16px;height:140px">
+        <sc-for list="{{ months }}" as="m" hint-placeholder-count="6">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end">
+            <div style="width:100%;background:{{ m.color }};border-radius:4px 4px 0 0;height:{{ m.height }}"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:8px">
+        <sc-for list="{{ months }}" as="m" hint-placeholder-count="6">
+          <div style="flex:1;text-align:center;font-size:11px;color:var(--text-muted)">{{ m.label }}</div>
+        </sc-for>
+      </div>
+    </x-import>
+
+    <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Card" hint-size="100%,320px">
+      <div style="font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:14px">Alertas e recomendações</div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="3">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--border-subtle)">
+            <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Tag" hint-size="auto,22px" tone="{{ a.tone }}">{{ a.tag }}</x-import>
+            <div style="font-size:13px;color:var(--text-primary);line-height:1.4">{{ a.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="padding:0 36px 36px">
+    <x-import component-from-global-scope="ValandroGestODesignSystem_e4cc4d.Card" hint-size="100%,240px">
+      <div style="font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:14px">Transações recentes</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="text-align:left"><th style="padding:8px 4px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-subtle)">Descrição</th><th style="padding:8px 4px;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-subtle)">Data</th><th style="padding:8px 4px;text-align:right;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border-subtle)">Valor</th></tr></thead>
+        <tbody>
+        <sc-for list="{{ transactions }}" as="t" hint-placeholder-count="5">
+          <tr>
+            <td style="padding:10px 4px;border-bottom:1px solid var(--border-subtle)">{{ t.desc }}
+              <sc-if value="{{ t.note }}" hint-placeholder-val="{{ false }}">
+                <div style="font-family:var(--font-display);font-style:italic;font-size:11px;color:var(--text-muted);margin-top:2px">{{ t.note }}</div>
+              </sc-if>
+            </td>
+            <td style="padding:10px 4px;border-bottom:1px solid var(--border-subtle);color:var(--text-muted)">{{ t.date }}</td>
+            <td style="padding:10px 4px;border-bottom:1px solid var(--border-subtle);text-align:right;font-weight:700;color:{{ t.color }}">{{ t.value }}</td>
+          </tr>
+        </sc-for>
+        </tbody>
+      </table>
+    </x-import>
+  </div>
+  <div style="padding:0 36px 32px;text-align:right">
+    <p style="font-family:var(--font-display);font-style:italic;font-size:13px;color:var(--text-muted);margin:0">O que este painel mostra hoje é a evidência da nossa próxima conversa.</p>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'overview', period: '30d' };
+
+  renderVals() {
+    return {
+      tab: this.state.tab,
+      setTab: (v) => this.setState({ tab: v }),
+      tabItems: [{ label: 'Visão Geral', value: 'overview' }, { label: 'Indicadores', value: 'indicators' }],
+      period: this.state.period,
+      setPeriod: (v) => this.setState({ period: v }),
+      periodOptions: [{ label: 'Últimos 30 dias', value: '30d' }, { label: 'Últimos 90 dias', value: '90d' }],
+      kpis: [
+        { label: 'Receita do mês', value: 'R$ 128.400', delta: '+12% vs. jun', tone: 'positive' },
+        { label: 'Despesas do mês', value: 'R$ 74.900', delta: '+3% vs. jun', tone: 'warning' },
+        { label: 'Resultado (Lucro)', value: 'R$ 53.500', delta: '+18% vs. jun', tone: 'positive', note: 'Concentrado nos 3 maiores clientes.' },
+        { label: 'Saldo em caixa', value: 'R$ 212.300', delta: 'projeção 30d positiva', tone: 'positive' },
+      ],
+      months: [
+        { label: 'FEV', height: '52%', color: 'var(--blue-100)' },
+        { label: 'MAR', height: '61%', color: 'var(--blue-100)' },
+        { label: 'ABR', height: '44%', color: 'var(--blue-100)' },
+        { label: 'MAI', height: '70%', color: 'var(--blue-300)' },
+        { label: 'JUN', height: '66%', color: 'var(--blue-300)' },
+        { label: 'JUL', height: '100%', color: 'var(--blue-500)' },
+      ],
+      alerts: [
+        { tag: 'Caixa', tone: 'positive', text: 'Saldo projetado permanece positivo pelos próximos 30 dias.' },
+        { tag: 'Despesa', tone: 'warning', text: 'Despesas com fornecedores subiram 3% — dentro do orçado, mas vale observar.' },
+        { tag: 'Recebível', tone: 'negative', text: 'Cliente Ourofino com parcela em atraso há 6 dias.' },
+      ],
+      transactions: [
+        { desc: 'Recebimento — Cliente Mérida Ltda', date: '24/07/2026', value: '+ R$ 18.200', color: 'var(--status-positive)' },
+        { desc: 'Pagamento — Folha de pagamento', date: '22/07/2026', value: '– R$ 31.400', color: 'var(--status-negative)' },
+        { desc: 'Recebimento — Cliente Ourofino', date: '19/07/2026', value: '+ R$ 9.850', color: 'var(--status-positive)' },
+        { desc: 'Pagamento — Fornecedor logística', date: '15/07/2026', value: '– R$ 6.120', color: 'var(--status-negative)' },
+        { desc: 'Recebimento — Cliente Bravante', date: '12/07/2026', value: '+ R$ 22.000', color: 'var(--status-positive)', note: 'Maior recebimento do período — 17% do total de julho.' },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

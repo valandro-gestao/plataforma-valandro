@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../design-system/tokens/colors.css">
+<link rel="stylesheet" href="../../design-system/tokens/typography.css">
+<link rel="stylesheet" href="../../design-system/tokens/spacing.css">
+<link rel="stylesheet" href="../../design-system/tokens/effects.css">
+<link rel="stylesheet" href="../../design-system/styles.css">
+<script src="./doc-page.js"></script>
+<style>
+doc-page:not(:defined){visibility:hidden}
+body{margin:0}
+a{color:var(--text-link)}
+a:hover{color:var(--text-link-hover)}
+.voice{font-family:var(--font-display);font-style:italic;font-weight:600;font-size:15px}
+.voice::before{content:"— "}
+.card{background:#fff;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:26px}
+.ledger{border-top:1px solid var(--border-default);padding-top:20px}
+</style>
+</helmet>
+<doc-page size="a4">
+
+<section class="page" style="background:var(--navy-900);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:64px 56px;font-family:var(--font-body);color:#fff" data-screen-label="Capa">
+  <div style="position:absolute;inset:0;background-image:url('../../design-system/assets/hex-pattern.svg');background-size:220px 190px;opacity:0.6"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,30,46,0.2),rgba(10,20,30,0.85))"></div>
+  <div style="position:relative">
+    <div class="voice" style="color:var(--blue-300)">Proposta Comercial</div>
+    <h1 style="font-family:var(--font-display);font-weight:800;font-size:42px;line-height:1.12;letter-spacing:var(--tracking-tight);max-width:420px;margin:16px 0 0">Gestão financeira e controladoria para a Mérida</h1>
+    <p style="font-size:16px;line-height:var(--leading-normal);color:rgba(255,255,255,.75);max-width:380px;margin-top:16px">Um acompanhamento contínuo de fluxo de caixa, resultado e indicadores — para decidir com clareza, não sob pressão.</p>
+  </div>
+  <div style="position:relative;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(255,255,255,.15);padding-top:20px">
+    <div>
+      <div style="font-size:13px;color:rgba(255,255,255,.55)">Preparado para</div>
+      <div style="font-family:var(--font-display);font-weight:700;font-size:16px;margin-top:4px">Mérida Comércio e Distribuição Ltda</div>
+    </div>
+    <div style="font-size:13px;color:rgba(255,255,255,.55)">11/08/2026</div>
+  </div>
+</section>
+
+<section class="page" style="background:#fff;padding:64px 56px;font-family:var(--font-body);color:var(--text-primary);display:flex;flex-direction:column" data-screen-label="Escopo">
+  <div class="voice" style="color:var(--blue-600)">Escopo</div>
+  <h2 style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:var(--tracking-tight);margin:14px 0 8px">Quatro frentes de trabalho</h2>
+  <p style="font-size:15px;color:var(--text-secondary);max-width:520px;margin-bottom:32px">O acompanhamento é organizado em quatro frentes que conversam entre si — nenhuma delas funciona isolada.</p>
+  <div style="display:flex;flex-direction:column">
+    <div class="ledger" style="display:flex;gap:24px;padding-bottom:22px">
+      <div style="font-family:var(--font-display);font-weight:800;color:var(--blue-200);font-size:32px;flex-shrink:0;width:48px">01</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:6px">Fluxo de Caixa</div><p style="font-size:14px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:460px">Controle diário de entradas e saídas, com projeção de 30 a 90 dias para antecipar apertos e sobras de caixa.</p></div>
+    </div>
+    <div class="ledger" style="display:flex;gap:24px;padding-bottom:22px">
+      <div style="font-family:var(--font-display);font-weight:800;color:var(--blue-200);font-size:32px;flex-shrink:0;width:48px">02</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:6px">DRE Gerencial</div><p style="font-size:14px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:460px">Demonstração de resultado mês a mês, reclassificada para refletir a operação real do negócio.</p></div>
+    </div>
+    <div class="ledger" style="display:flex;gap:24px;padding-bottom:22px">
+      <div style="font-family:var(--font-display);font-weight:800;color:var(--blue-200);font-size:32px;flex-shrink:0;width:48px">03</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:6px">Orçamento e Forecast</div><p style="font-size:14px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:460px">Metas construídas junto com você, revisadas a cada trimestre conforme a realidade do negócio muda.</p></div>
+    </div>
+    <div class="ledger" style="display:flex;gap:24px">
+      <div style="font-family:var(--font-display);font-weight:800;color:var(--blue-200);font-size:32px;flex-shrink:0;width:48px">04</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:6px">Indicadores de Desempenho</div><p style="font-size:14px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:460px">Um painel enxuto de indicadores, acompanhado com você em reunião — não apenas enviado por e-mail.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="page" style="background:#fff;padding:64px 56px;font-family:var(--font-body);color:var(--text-primary);display:flex;flex-direction:column" data-screen-label="Método">
+  <div class="voice" style="color:var(--blue-600)">Método</div>
+  <h2 style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:var(--tracking-tight);margin:14px 0 12px">Como trabalhamos</h2>
+  <p style="font-family:var(--font-display);font-style:italic;font-weight:600;font-size:17px;line-height:1.5;color:var(--text-primary);max-width:520px;margin-bottom:40px">Todo mês, olhamos o que aconteceu no seu caixa e resultado, explicamos o que isso significa para o seu negócio, e recomendamos até onde acreditamos que vale ir. A decisão é sempre sua.</p>
+  <div style="display:flex;flex-direction:column;gap:0;margin-top:8px">
+    <div style="display:flex;gap:20px;padding-bottom:28px;border-left:2px solid var(--border-default);margin-left:19px;padding-left:32px;position:relative">
+      <div style="position:absolute;left:-21px;top:0;width:40px;height:40px;border-radius:999px;background:var(--navy-900);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:15px">1</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:17px">Diagnóstico</div><p style="font-size:14px;color:var(--text-secondary);margin-top:6px;max-width:440px">Entendemos os números atuais, os processos existentes e onde as decisões estão travando.</p></div>
+    </div>
+    <div style="display:flex;gap:20px;padding-bottom:28px;border-left:2px solid var(--border-default);margin-left:19px;padding-left:32px;position:relative">
+      <div style="position:absolute;left:-21px;top:0;width:40px;height:40px;border-radius:999px;background:var(--navy-900);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:15px">2</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:17px">Estruturação</div><p style="font-size:14px;color:var(--text-secondary);margin-top:6px;max-width:440px">Organizamos fluxo de caixa, DRE e indicadores num formato claro, feito para ser usado — não arquivado.</p></div>
+    </div>
+    <div style="display:flex;gap:20px;padding-bottom:28px;border-left:2px solid var(--border-default);margin-left:19px;padding-left:32px;position:relative">
+      <div style="position:absolute;left:-21px;top:0;width:40px;height:40px;border-radius:999px;background:var(--navy-900);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:15px">3</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:17px">Acompanhamento mensal</div><p style="font-size:14px;color:var(--text-secondary);margin-top:6px;max-width:440px">Atualizamos os números todo mês e preparamos o material para a conversa seguinte.</p></div>
+    </div>
+    <div style="display:flex;gap:20px;margin-left:19px;padding-left:32px;position:relative">
+      <div style="position:absolute;left:-21px;top:0;width:40px;height:40px;border-radius:999px;background:var(--blue-500);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:15px">4</div>
+      <div><div style="font-family:var(--font-display);font-weight:700;font-size:17px">Conversa estratégica</div><p style="font-size:14px;color:var(--text-secondary);margin-top:6px;max-width:440px">Uma reunião de verdade para decidir junto — não um relatório enviado sem contexto.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="page" style="background:#fff;padding:64px 56px;font-family:var(--font-body);color:var(--text-primary);display:flex;flex-direction:column" data-screen-label="Investimento">
+  <div class="voice" style="color:var(--blue-600)">Investimento</div>
+  <h2 style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:var(--tracking-tight);margin:14px 0 32px">Condições</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding:22px 0;border-top:1px solid var(--border-default);border-bottom:1px solid var(--border-default)">
+    <div>
+      <div style="font-size:13px;color:var(--text-secondary)">Mensalidade — acompanhamento recorrente</div>
+      <div style="font-family:var(--font-display);font-weight:800;font-size:34px;color:var(--navy-900);margin-top:6px">R$ 3.200<span style="font-size:15px;font-weight:600;color:var(--text-muted)">/mês</span></div>
+    </div>
+    <div style="text-align:right;font-size:13px;color:var(--text-secondary);max-width:180px">Permanência mínima de 6 meses, com reajuste anual pelo IPCA.</div>
+  </div>
+  <div style="font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:14px">O que está incluso</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue-500);font-weight:700">✓</span><span style="font-size:14px;color:var(--text-secondary)">Fluxo de caixa atualizado semanalmente</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue-500);font-weight:700">✓</span><span style="font-size:14px;color:var(--text-secondary)">DRE gerencial mensal</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue-500);font-weight:700">✓</span><span style="font-size:14px;color:var(--text-secondary)">Reunião mensal de resultado com sócio responsável</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue-500);font-weight:700">✓</span><span style="font-size:14px;color:var(--text-secondary)">Revisão trimestral de orçamento e forecast</span></div>
+    <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue-500);font-weight:700">✓</span><span style="font-size:14px;color:var(--text-secondary)">Canal direto para dúvidas entre reuniões</span></div>
+  </div>
+</section>
+
+<section class="page" style="background:var(--navy-900);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:64px 56px;font-family:var(--font-body);color:#fff" data-screen-label="Encerramento">
+  <img src="../../design-system/assets/photo-office-real.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.28" alt="">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,30,46,0.55),var(--navy-900) 75%)"></div>
+  <div style="position:relative;max-width:460px">
+    <p style="font-family:var(--font-display);font-style:italic;font-weight:600;font-size:26px;line-height:1.45;letter-spacing:var(--tracking-tight)">Hoje, quando você precisa decidir algo rápido, de onde vem a informação que te dá segurança?</p>
+    <p style="font-size:15px;line-height:var(--leading-normal);color:rgba(255,255,255,.65);margin-top:28px;max-width:400px">Essa é a primeira pergunta de qualquer ciclo de trabalho — e é onde gostaríamos de começar com você. Venha tomar um café com a gente.</p>
+    <div style="margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:rgba(255,255,255,.55)">Valandro Gestão — Consultoria em Controladoria Financeira</div>
+  </div>
+</section>
+
+</doc-page>
+
+</x-dc>
+</body>
+</html>

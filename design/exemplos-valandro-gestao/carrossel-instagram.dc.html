@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../../design-system/tokens/colors.css">
+<link rel="stylesheet" href="../../design-system/tokens/typography.css">
+<link rel="stylesheet" href="../../design-system/tokens/spacing.css">
+<link rel="stylesheet" href="../../design-system/tokens/effects.css">
+<link rel="stylesheet" href="../../design-system/styles.css">
+</helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1080" height="1080" hint-size="100%,100%">
+
+<section data-label="Capa" data-speaker-notes="Slide de abertura do carrossel" style="position:relative;width:100%;height:100%;background:var(--navy-900);overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <div style="position:absolute;inset:0;background-image:url('../../design-system/assets/hex-pattern.svg');background-size:280px 242px;opacity:0.5"></div>
+  <div style="position:relative">
+    <div style="font-family:var(--font-display);font-style:italic;font-weight:600;font-size:20px;color:var(--blue-300)">— Educação Financeira</div>
+    <h1 style="font-family:var(--font-display);font-weight:800;font-size:58px;line-height:1.1;letter-spacing:var(--tracking-tight);color:#fff;max-width:760px;margin-top:20px">5 sinais de que sua empresa precisa de controladoria financeira</h1>
+    <p style="font-size:22px;color:rgba(255,255,255,.7);margin-top:24px">Arraste para o lado →</p>
+  </div>
+</section>
+
+<section data-label="Sinal 1" data-speaker-notes="Primeiro sinal" style="position:relative;width:100%;height:100%;background:#fff;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <div style="font-family:var(--font-display);font-weight:800;font-size:120px;color:var(--blue-100);line-height:1;position:absolute;top:70px;left:96px">01</div>
+  <div style="position:relative;margin-top:80px">
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:42px;letter-spacing:var(--tracking-tight);color:var(--text-primary);max-width:720px;line-height:1.15">Você só descobre o saldo de caixa quando o dinheiro já acabou</h2>
+    <p style="font-size:20px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:640px;margin-top:24px">Sem projeção, toda decisão financeira vira reação a um problema que já aconteceu.</p>
+  </div>
+</section>
+
+<section data-label="Sinal 2" data-speaker-notes="Segundo sinal" style="position:relative;width:100%;height:100%;background:var(--blue-50);overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <div style="font-family:var(--font-display);font-weight:800;font-size:120px;color:var(--blue-200);line-height:1;position:absolute;top:70px;left:96px">02</div>
+  <div style="position:relative;margin-top:80px">
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:42px;letter-spacing:var(--tracking-tight);color:var(--text-primary);max-width:720px;line-height:1.15">Fluxo de caixa e resultado do mês nunca batem com o que você esperava</h2>
+    <p style="font-size:20px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:640px;margin-top:24px">Ter dinheiro em caixa não significa ter lucro — e confundir os dois leva a decisões erradas.</p>
+  </div>
+</section>
+
+<section data-label="Sinal 3" data-speaker-notes="Terceiro sinal" style="position:relative;width:100%;height:100%;background:#fff;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <div style="font-family:var(--font-display);font-weight:800;font-size:120px;color:var(--blue-100);line-height:1;position:absolute;top:70px;left:96px">03</div>
+  <div style="position:relative;margin-top:80px">
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:42px;letter-spacing:var(--tracking-tight);color:var(--text-primary);max-width:720px;line-height:1.15">Toda decisão importante é tomada sozinho, sem um segundo olhar</h2>
+    <p style="font-size:20px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:640px;margin-top:24px">Boas decisões nascem do encontro entre informação confiável e uma boa conversa.</p>
+  </div>
+</section>
+
+<section data-label="Sinal 4" data-speaker-notes="Quarto sinal" style="position:relative;width:100%;height:100%;background:var(--blue-50);overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <div style="font-family:var(--font-display);font-weight:800;font-size:120px;color:var(--blue-200);line-height:1;position:absolute;top:70px;left:96px">04</div>
+  <div style="position:relative;margin-top:80px">
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:42px;letter-spacing:var(--tracking-tight);color:var(--text-primary);max-width:720px;line-height:1.15">Você não sabe se pode contratar, investir ou esperar mais um mês</h2>
+    <p style="font-size:20px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:640px;margin-top:24px">Sem indicadores, cada decisão de crescimento é uma aposta — não uma escolha embasada.</p>
+  </div>
+</section>
+
+<section data-label="Sinal 5" data-speaker-notes="Quinto sinal" style="position:relative;width:100%;height:100%;background:#fff;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <div style="font-family:var(--font-display);font-weight:800;font-size:120px;color:var(--blue-100);line-height:1;position:absolute;top:70px;left:96px">05</div>
+  <div style="position:relative;margin-top:80px">
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:42px;letter-spacing:var(--tracking-tight);color:var(--text-primary);max-width:720px;line-height:1.15">O contador cuida do passado — mas ninguém participa da decisão sobre o futuro</h2>
+    <p style="font-size:20px;color:var(--text-secondary);line-height:var(--leading-normal);max-width:640px;margin-top:24px">Contabilidade registra o que já aconteceu. Controladoria ajuda a decidir o que vem a seguir.</p>
+  </div>
+</section>
+
+<section data-label="Fechamento" data-speaker-notes="CTA final" style="position:relative;width:100%;height:100%;background:var(--navy-900);overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px;font-family:var(--font-body);box-sizing:border-box">
+  <img src="../../design-system/assets/photo-office-real.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.26" alt="">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,30,46,0.55),var(--navy-900) 78%)"></div>
+  <div style="position:relative;max-width:760px">
+    <div style="font-family:var(--font-display);font-style:italic;font-weight:600;font-size:18px;color:var(--blue-300);margin-bottom:22px">— Vamos conversar</div>
+    <h2 style="font-family:var(--font-display);font-weight:800;font-size:38px;line-height:1.25;letter-spacing:var(--tracking-tight);color:#fff">Reconheceu algum desses sinais? Vamos conversar.</h2>
+    <p style="font-size:19px;color:rgba(255,255,255,.7);margin-top:20px;line-height:var(--leading-normal)">Venha tomar um café com a gente para entender em qual estágio da jornada sua empresa está.</p>
+  </div>
+</section>
+
+</x-import>
+
+</x-dc>
+</body>
+</html>

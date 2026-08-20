@@ -25,6 +25,9 @@ decidido, em vez de reabrir a mesma discussão.
 |---|---|
 | [`docs/PADRAO_TECNOLOGICO_VALANDRO.md`](docs/PADRAO_TECNOLOGICO_VALANDRO.md) | Stack tecnológica, infraestrutura, deploy, autenticação, versionamento e convenções técnicas comuns entre aplicações. |
 | [`docs/PADRAO_PROCESSOS_ASSISTIDOS_IA.md`](docs/PADRAO_PROCESSOS_ASSISTIDOS_IA.md) | Padrão de processo para uso de IA em fluxos que transformam informação externa ambígua em dados/configuração com efeito persistente, com humano no loop. |
+| [`docs/01_Plataforma_da_Marca.md`](docs/01_Plataforma_da_Marca.md) | Fundamento estratégico da marca Valandro Gestão — propósito, posicionamento, tom de voz. |
+| [`docs/DESIGN_LANGUAGE_VALANDRO.md`](docs/DESIGN_LANGUAGE_VALANDRO.md) | Linguagem visual/editorial normativa da marca (v1.0). |
+| [`design-system/README.md`](design-system/README.md) | Design System — tokens, componentes, guidelines e assets reutilizáveis. |
 
 ## Princípios gerais
 
