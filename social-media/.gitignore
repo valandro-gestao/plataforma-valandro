@@ -1,0 +1,18 @@
+# Segredos e configuração local — nunca versionar
+.env
+.env.*
+!.env.example
+
+# Saída gerada pelo pipeline de renderização (PoC) — artefatos, não código
+poc/output/
+
+# Ambiente Python
+.venv/
+__pycache__/
+*.pyc
+
+# Ambiente Node (futuro frontend)
+node_modules/
+
+# Sistema
+.DS_Store
