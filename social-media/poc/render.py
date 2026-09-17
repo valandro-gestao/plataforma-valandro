@@ -24,7 +24,6 @@ def render_html(content: dict) -> str:
     env = Environment(loader=FileSystemLoader(str(POC_DIR / "templates")))
     template = env.get_template("feed_post.html.jinja")
     return template.render(
-        kicker=content.get("kicker", ""),
         headline=content["headline"],
         body=content["body"],
         styles_css=(DESIGN_SYSTEM_DIR / "styles.css").as_uri(),

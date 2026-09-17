@@ -27,20 +27,22 @@
     padding: 72px;
     font-family: var(--font-body);
   }
+  /*
+   * O container .canvas é flex column; por padrão o Flexbox estica (align-items:
+   * stretch) a largura dos filhos para preencher o eixo cruzado. Como a logo só
+   * define altura, isso achata a proporção original do asset horizontalmente.
+   * align-self: flex-start desliga o stretch só para a logo; width: auto +
+   * object-fit: contain garantem que a proporção do arquivo-fonte seja sempre
+   * respeitada, independente do container.
+   */
   .logo {
     height: 32px;
+    width: auto;
+    align-self: flex-start;
+    object-fit: contain;
     display: block;
   }
   .content { max-width: 820px; }
-  .kicker {
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--text-on-inverse-muted);
-    margin: 0 0 var(--space-6) 0;
-  }
   .headline {
     font-family: var(--font-display);
     font-size: var(--text-3xl);
@@ -74,7 +76,6 @@
   <div class="canvas">
     <img class="logo" src="{{ logo_white }}" alt="Valandro Gestão">
     <div class="content">
-      {% if kicker %}<p class="kicker">{{ kicker }}</p>{% endif %}
       <p class="headline">{{ headline }}</p>
       <p class="body">{{ body }}</p>
     </div>
