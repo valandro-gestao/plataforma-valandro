@@ -66,6 +66,21 @@ Fase B (LinkedIn) repete os passos 2–6 trocando o adapter de publicação pelo
 
 O PoC está concluído quando existir, para o Instagram, pelo menos um post real publicado na conta da Valandro através deste pipeline (não simulado, não capturado em print) — e, quando o LinkedIn aprovar o acesso, o mesmo para um post de texto+imagem.
 
+**Fase A (Instagram) — concluída em 2026-09-17.** Pipeline completo executado de ponta a ponta com publicação real:
+
+| Campo | Valor |
+|---|---|
+| Conta | `valandrogestao` (Business) |
+| ID da mídia | `18107174209992902` |
+| Permalink | https://www.instagram.com/p/DdYyiqvlUro/ |
+| Timestamp (API) | 2026-09-17T11:48:39+0000 |
+| Tipo | `IMAGE` / `FEED` |
+| Validação | Retorno da API conferido via `GET /<media_id>` — legenda publicada é byte-a-byte igual à legenda aprovada nesta conversa |
+
+Cada passo (render → upload Supabase → aprovação explícita em chat → publish → verificação do retorno) rodou com o código deste diretório, sem automação de navegador e sem publicar nada além do que foi mostrado e aprovado.
+
+**Fase B (LinkedIn)** segue pendente da aprovação de acesso ao Community Management API (ver checklist acima).
+
 ## Próximo passo
 
-Assim que o checklist de contas acima estiver marcado (pelo menos o do Instagram), retomamos para eu implementar os itens 1–6 da Fase A.
+Fase A do PoC provada. Não publicar nada novo sem nova aprovação explícita. Próximas decisões possíveis: iniciar/acompanhar o pedido de acesso ao LinkedIn (Fase B), evoluir o template para carrossel/stories, ou decidir se já vale começar a estrutura da aplicação real (`ARQUITETURA.md`) — a definir com o usuário.
