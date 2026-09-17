@@ -60,3 +60,15 @@ Registro de decisões locais deste projeto (ADR simplificado), no formato usado 
 | Confirmado na prática | App `Valandro Social Media` criado no Business Portfolio `Valandro Gestão`, conta profissional `valandrogestao` conectada e token gerado — **sem** configurar webhooks, **sem** publicar o app e **sem** verificação empresarial. Bate exatamente com o previsto. |
 | Gap identificado nesta etapa | A API do Instagram exige URL pública para a imagem no momento da publicação (não aceita upload direto de arquivo local para fotos). É necessário um projeto Supabase (ao menos Storage) para hospedar a imagem renderizada antes do passo de publicação — não estava listado como bloqueante em `POC.md` até esta confirmação. |
 | Segurança | O token de acesso não foi e não deve ser compartilhado nesta conversa (nem em texto, nem em arquivo) — fica só no `.env` local do usuário, fora do Git. |
+
+---
+
+## 6. PoC Fase A encerrado com sucesso — início da V1 real
+
+| Campo | Conteúdo |
+|---|---|
+| Data | 2026-09-17 |
+| Contexto | Pipeline `conteúdo → arte → preview → aprovação → publicação` provado de ponta a ponta com publicação real em `@valandrogestao` (mídia `18107174209992902`, ver `POC.md`). |
+| Decisão | Encerrar o PoC Fase A e avançar para a V1 real da aplicação, promovendo o código já validado (render, upload Supabase, adapter Instagram) para dentro da estrutura da aplicação em vez de reescrevê-lo — plano de promoção em `ARQUITETURA.md`. Em paralelo, protocolar o pedido de acesso ao LinkedIn Community Management API, por ser o item de maior prazo externo. |
+| Escopo da V1 (confirmado) | Corte vertical mínimo do fluxo completo (calendário → conteúdo → preview → aprovação → agendamento → publicação) para Instagram/feed/imagem única. Sem carrossel, stories, analytics, IA interna, outras redes ou infraestrutura nova além da já prevista. |
+| Revisão futura | A decisão #1 (protótipo temporário neste repositório) previa migração para `valandro-social-media` "quando o projeto tiver backend, banco de dados e integrações reais em funcionamento" — a V1 é esse gatilho. Timing exato da migração (antes ou depois de construir a V1) está em aberto, ver `ARQUITETURA.md`. |

@@ -1,5 +1,7 @@
 # PoC — menor prova de conceito do pipeline
 
+**Status: Fase A encerrada por decisão do usuário em 2026-09-17, com sucesso.** Este documento fica como registro histórico de como o pipeline foi validado. A partir daqui, o desenvolvimento segue como V1 real da aplicação — ver `ARQUITETURA.md`. O passo a passo de solicitação de acesso ao LinkedIn (abaixo) continua ativo, é uma ação externa independente do código.
+
 **Objetivo único:** demonstrar, de ponta a ponta, com publicação real (não simulada):
 
 ```
@@ -33,12 +35,23 @@ Preciso que alguém com acesso administrativo às contas da Valandro execute e c
 **Gap identificado nesta etapa (não previsto na configuração da Meta):** a API do Instagram exige que a imagem esteja em uma **URL pública** no momento da publicação — não aceita upload direto de arquivo local para fotos. Isso exige um local para hospedar a imagem renderizada antes de publicar:
 - [ ] **Projeto Supabase criado** (mesmo que só para Storage nesta fase) — necessário antes do passo 5 (publicação real) poder rodar de verdade. Sem isso, dá para validar os passos 1–4 (render + preview) mas não o passo 5.
 
-**LinkedIn (disparar o quanto antes, é o item de maior prazo):**
-- [ ] Confirmado papel de Administrador/Content Admin na Company Page da Valandro.
+**LinkedIn (disparar o quanto antes, é o item de maior prazo) — passo a passo:**
+
+1. **Confirmar papel na Company Page.** A pessoa que vai criar o app precisa ser Administrador (ou `Content Admin`/`Direct Sponsored Content Poster`) da página `Valandro Gestão` no LinkedIn. Confirme em: página da empresa → **Admin tools → Manage admins**.
+2. **Criar o app.** Em [developer.linkedin.com](https://developer.linkedin.com) → **My apps → Create app**: nome do app (ex.: "Valandro Social Media"), campo **LinkedIn Page** apontando para a página `Valandro Gestão`, logo do app, aceitar os termos.
+3. **Verificar o app com a página.** Ainda em My apps → abra o app criado → aba **Settings** → botão **Verify**. Gera uma URL única — envie para o super admin da página (pode ser você mesmo, se for super admin) por e-mail ou mensagem do LinkedIn. O super admin tem até 30 dias para aprovar; sem essa verificação, o app não consegue postar em nome da página.
+4. **Solicitar o produto Community Management API.** Na aba **Products** do app, solicite acesso a **Community Management API**. Isso abre um formulário oficial de acesso.
+5. **Preencher o formulário de acesso** com: e-mail comercial (do domínio da Valandro, não pessoal), razão social, endereço registrado, URL do site institucional, URL da política de privacidade. É avaliado como **Development Tier** primeiro — acesso liberado com limites baixos (500 chamadas/app e 100/membro a cada 24h), suficiente para desenvolver e testar.
+6. **Aguardar aprovação.** Não há SLA público — pode levar dias a poucas semanas. Isso não bloqueia o trabalho na V1 da aplicação (Instagram); só bloqueia a Fase B (integração real do LinkedIn).
+7. **Depois de aprovado** (não fazer agora): gerar as credenciais OAuth do app (Client ID/Secret) e, quando formos implementar de fato, rodar o fluxo de autorização com um usuário que tenha papel na página para obter o token com escopo `w_organization_social`. Upgrade para **Standard Tier** (sem limites) só é solicitado depois, e exige uma gravação de tela demonstrando o caso de uso já funcionando — não é o momento de fazer isso agora.
+
+Checklist de status:
+- [ ] Papel de Administrador confirmado na Company Page.
 - [ ] App criado em developer.linkedin.com, vinculado à Company Page.
-- [ ] Pedido de acesso ao produto "Community Management API" (Development Tier) enviado pelo formulário oficial.
-- [ ] Aprovação recebida (bloqueante para a Fase B — sem isso, não há publicação real no LinkedIn a validar).
-- [ ] Token OAuth com escopo `w_organization_social` gerado após aprovação.
+- [ ] App verificado pelo super admin da página.
+- [ ] Pedido de acesso ao "Community Management API" (Development Tier) protocolado.
+- [ ] Aprovação recebida (bloqueante só para a Fase B).
+- [ ] Token OAuth com escopo `w_organization_social` gerado — só depois de aprovado, e só quando formos implementar a integração de fato.
 
 ## Escopo técnico mínimo
 

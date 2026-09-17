@@ -1,80 +1,120 @@
-# Arquitetura — Social Media (rascunho pós-validação técnica)
+# Arquitetura — Social Media
 
-**Status:** rascunho. Descreve a arquitetura alvo depois que o PoC (`POC.md`) confirmar o pipeline de publicação. Não implementado ainda — nenhum destes componentes existe como código neste momento.
+**Status:** proposta da V1, escrita depois do PoC Fase A (Instagram) ter publicado com sucesso em `@valandrogestao` — ver `POC.md`. Os pontos marcados **"a validar"** dependem de confirmação do usuário antes de qualquer implementação. Nada da V1 foi implementado ainda.
 
-## Visão geral
+## O que o PoC provou (e por isso não é redesenhado aqui)
 
-Aplicação single-tenant (só a Valandro Gestão), seguindo `PADRAO_TECNOLOGICO_VALANDRO.md`: backend Python/FastAPI, Supabase (banco + storage + auth), frontend Next.js.
+- **Renderização**: template HTML/Jinja2 próprio (`poc/templates/feed_post.html.jinja`), separado dos `.dc.html`, consumindo só os tokens normativos do Design System, renderizado headless via Playwright. Corrigido para respeitar a proporção original de assets (ver commit de correção da logo).
+- **Storage**: upload para bucket privado do Supabase + signed URL de curta duração — é exatamente o que a API do Instagram exige para publicar.
+- **Integração Instagram**: fluxo de 2 passos (criar container → `media_publish`) contra a Instagram Graph API real, com token de Standard Access (sem App Review).
+- **Trava de publicação**: nenhuma chamada de publicação roda sem uma confirmação explícita — no PoC, a flag `--confirm` do script, alinhada com uma aprovação humana real na conversa.
+
+A V1 **promove** esse código para dentro da estrutura da aplicação (ver seção "Promoção do código do PoC") em vez de reescrevê-lo. O que muda é o que envolve esse núcleo: persistência real, uma tela de aprovação de verdade (não mais a conversa como gate) e agendamento.
+
+## Corte vertical mínimo da V1
+
+Objetivo: materializar o fluxo completo — **calendário → conteúdo/peça → preview → aprovação humana → agendamento → publicação** — para um único caso (Instagram, post de feed, imagem única), com o menor acréscimo de infraestrutura possível.
 
 ```
-Editor humano ──▶ Conteúdo (JSON/formulário) ──▶ Render (Design System → PNG/PDF) ──▶ Fila de aprovação
-                                                                                            │
-                                                                                     aprovação humana
-                                                                                            │
-                                                                                            ▼
-                                                                        Worker de publicação (cron)
-                                                                         │                      │
-                                                                   Instagram Graph API   LinkedIn Posts API
+Usuário cria conteúdo (formulário) ──▶ render automático (peça + preview)
+                                                    │
+                                          fica pending_approval
+                                                    │
+                                     tela de aprovação (Next.js): aprova/rejeita
+                                                    │
+                                              approved + scheduled_at
+                                                    │
+                                   worker (cron) publica quando a hora chega
+                                                    │
+                                         Instagram Graph API (adapter do PoC)
 ```
 
-## Fluxo de conteúdo (máquina de estados)
+### Máquina de estados (sem mudança em relação ao rascunho anterior)
 
 ```
 draft → pending_approval → approved → scheduled → published
-                 │
-              rejected → (volta para draft)
+                 │                         │
+              rejected ◀───────────────────┘ (se rejeitado depois de aprovado, antes de publicar)
 ```
 
-A tela de aprovação mostra, por dia, cada item pendente com arte + legenda + rede de destino. Só após aprovação explícita o worker de publicação pode agir (requisito não-negociável do usuário).
+Diferença real em relação ao PoC: no PoC, a aprovação publicava na hora. Na V1, aprovação e agendamento são passos distintos — aprovar não publica, só libera para a fila do worker.
 
-## Stack
+## O que fica fora da V1, de propósito (confirmado pelo usuário)
 
-| Camada | Escolha | Referência |
+- Carrossel e Stories no Instagram.
+- Analytics/métricas.
+- Chamada à API do Claude dentro da aplicação (`DECISOES.md` #4 continua valendo).
+- Integração real do LinkedIn — nesta rodada só o **acesso** ao Community Management API é solicitado; a integração de código só começa depois de aprovado.
+- Qualquer infraestrutura nova além do que já está listado abaixo (sem fila dedicada, sem multi-tenant, sem SSO).
+
+## Modelo de dados — simplificado à luz do PoC
+
+O rascunho anterior desta seção previa `post_assets` e `platform_credentials` como tabelas. O PoC mostrou que isso seria infraestrutura antecipada para o corte da V1:
+
+- **Sem `post_assets`**: V1 só tem 1 imagem por post (sem carrossel), então o caminho da imagem no Storage fica direto em `posts`. Essa tabela volta quando carrossel/multi-imagem entrar no roadmap.
+- **Sem `platform_credentials`**: há uma conta, uma rede, um token — ele continua em variável de ambiente/secret da hospedagem (como já validado no PoC e já exigido por `PADRAO_TECNOLOGICO_VALANDRO.md` §9), não em linha de banco. Essa tabela só se justifica com múltiplas contas/redes.
+
+Modelo proposto:
+
+- **`posts`**: `id`, `status` (`draft`/`pending_approval`/`approved`/`scheduled`/`published`/`rejected`), `headline`, `body`, `caption`, `image_path` (Storage), `preview_generated_at`, `scheduled_at`, `published_media_id`, `published_permalink`, `created_by`, `created_at`/`updated_at`. Rede fixa (`instagram`) nesta fase — a coluna existe, mas só tem um valor possível até o LinkedIn entrar.
+- **`approval_log`**: `post_id`, `actor` (usuário do Supabase Auth), `action` (`approved`/`rejected`), `previous_status`, `new_status`, `note` (opcional), `created_at`. Mantido desde o rascunho original — é o requisito de trilha de aprovação, não infraestrutura antecipada.
+
+### A validar
+- Confirmar que essa simplificação (sem `post_assets`/`platform_credentials`) está correta para o escopo combinado.
+
+## Stack (sem mudanças em relação ao rascunho anterior, agora com fonte de cada peça)
+
+| Camada | Escolha | Onde já existe/está validado |
 |---|---|---|
-| Backend | Python + FastAPI + Pydantic | `PADRAO_TECNOLOGICO_VALANDRO.md` §2 |
-| Frontend | Next.js (React) | `DECISOES.md` #2 — exceção documentada ao critério padrão (Streamlit) |
-| Banco / Auth / Storage | Supabase (projeto próprio) | `PADRAO_TECNOLOGICO_VALANDRO.md` §6–8 |
-| Renderização de peças | Templates HTML/Jinja2 + Playwright (headless) | `VALIDACAO_TECNICA.md` §3 — em validação |
-| IA | Claude, via `valandro-ai`, só a partir da fase pós-PoC | `DECISOES.md` #4 |
-| Publicação | Adapters dedicados por rede (Instagram Graph API, LinkedIn Posts API) | `VALIDACAO_TECNICA.md` §1–2 |
-| Agendamento | Worker/cron nativo da hospedagem, sem fila dedicada | `PADRAO_TECNOLOGICO_VALANDRO.md` §16 |
+| Backend | Python + FastAPI + Pydantic | Novo na V1 — hoje os scripts do PoC rodam soltos |
+| Frontend | Next.js (React) | Novo na V1 — PoC usou a conversa como aprovação |
+| Banco / Auth | Supabase (Postgres + Auth) | Novo na V1 — PoC não usou banco nem login |
+| Storage | Supabase Storage | **Já validado no PoC** — mesmo bucket, mesmo projeto |
+| Renderização | Jinja2 + Playwright | **Já validado no PoC** — mesmo template, promovido sem reescrever |
+| Publicação Instagram | Instagram Graph API | **Já validado no PoC** — mesmo adapter, promovido sem reescrever |
+| Agendamento | Worker/cron nativo da hospedagem | Novo na V1 — PoC publicava na hora, sem agendamento |
 
-## Modelo de dados (rascunho)
+### A validar
+- **Hospedagem**: `PADRAO_TECNOLOGICO_VALANDRO.md` recomenda Render (backend) + Vercel (frontend) como referência atual. Para a V1, começamos já fazendo esse deploy, ou desenvolvemos localmente primeiro e decidimos hospedagem quando o agendamento precisar rodar de forma contínua (sem depender de alguém com o computador ligado)? Isso muda quando o worker de agendamento passa a ser necessário de verdade.
+- **Auth**: Supabase Auth com e-mail/senha para os poucos usuários internos da Valandro que vão aprovar conteúdo — quantas contas e quem, para criar os usuários certos desde o início.
 
-- `posts` — status (`draft`/`pending_approval`/`approved`/`scheduled`/`published`/`rejected`), redes-alvo, `scheduled_at`, `created_at`/`updated_at`.
-- `post_assets` — arte gerada (URL no Storage), legenda, variação por rede (o mesmo conteúdo pode virar peças diferentes por rede: carrossel de imagens no Instagram, documento PDF no LinkedIn).
-- `approval_log` — quem aprovou/rejeitou, quando, estado anterior/novo — trilha de auditoria da publicação pública.
-- `platform_credentials` — tokens OAuth por rede social, nunca versionados; renovação automatizada é requisito da aplicação real (não do PoC).
+## Promoção do código do PoC (não reescrever o que já funciona)
 
-## Estrutura de pastas alvo
+| Código do PoC | Destino na V1 | O que muda |
+|---|---|---|
+| `poc/templates/feed_post.html.jinja` | `backend/app/integrations/render/templates/feed_post.html.jinja` | Nada na lógica — só o caminho. Continua sendo o único template até carrossel/stories entrarem no roadmap. |
+| `poc/render.py` | `backend/app/integrations/render/render.py` | Deixa de ler um JSON de arquivo e passa a receber os campos direto do registro de `posts`; grava o PNG no Supabase Storage (hoje é um passo separado, `upload_supabase.py`) em vez de num arquivo local. |
+| `poc/upload_supabase.py` | `backend/app/integrations/storage/supabase.py` | Lógica idêntica — só passa a ser chamada pelo serviço de renderização em vez de rodada manualmente. |
+| `poc/check_setup.py` | `backend/app/integrations/platforms/instagram.py` (função auxiliar) | Vira uma função de validação de token reutilizada, não um script avulso. |
+| `poc/publish_instagram.py` | `backend/app/integrations/platforms/instagram.py` | A trava `--confirm` de linha de comando vira uma trava de aplicação: a função de publicar só é chamada pelo worker, e o worker só considera posts com `status == "approved"` e `scheduled_at` já alcançado — o equivalente funcional da mesma trava, adaptado para rodar sem humano no loop no momento exato da chamada (a aprovação humana já aconteceu antes, na tela). |
+
+## Estrutura de pastas da V1
 
 ```
 social-media/
 ├── backend/
 │   ├── app/
-│   │   ├── api/            # endpoints: posts, calendário, aprovações, publicação
+│   │   ├── api/            # endpoints: posts (CRUD), aprovação, calendário
 │   │   ├── core/            # config, segurança
-│   │   ├── models/           # SQLAlchemy
+│   │   ├── models/           # SQLAlchemy: posts, approval_log
 │   │   ├── schemas/          # Pydantic
-│   │   ├── services/          # regras de negócio: fluxo de aprovação, agendamento
-│   │   ├── integrations/       # ai/, render/, platforms/{instagram,linkedin}/
-│   │   └── workers/           # publicação agendada
+│   │   ├── services/          # regras de negócio: transição de estados, agendamento
+│   │   ├── integrations/
+│   │   │   ├── render/        # promovido do poc/
+│   │   │   ├── storage/       # promovido do poc/
+│   │   │   └── platforms/
+│   │   │       └── instagram.py   # promovido do poc/
+│   │   └── workers/           # publica posts approved cujo scheduled_at chegou
 │   ├── migrations/            # Alembic
 │   └── tests/
-├── frontend/                   # Next.js — calendário e tela de aprovação
+├── frontend/                   # Next.js — calendário + tela de aprovação
 ├── docs/
+├── poc/                         # arquivado como histórico, não apagado — ver nota abaixo
 └── .env.example
 ```
 
-`integrations/platforms/` mantém cada rede social como um adapter isolado — Instagram (URL pública de mídia) e LinkedIn (upload de binário para URN) têm fluxos de envio de mídia incompatíveis entre si (ver `VALIDACAO_TECNICA.md` §6), por isso não compartilham a mesma lógica de baixo nível.
-
-## Fora do escopo da V1, de propósito
-
-- Analytics/métricas de performance dos posts.
-- Multi-tenant (gestão de redes de clientes) — este produto é só para a própria Valandro.
-- Fila de mensagens dedicada — cron/worker nativo resolve o volume esperado.
-- Calendário editorial completo — o PoC valida o pipeline com um único conteúdo antes de construir a experiência de calendário.
+`poc/` não é apagado: fica como registro de como o pipeline foi validado, mas deixa de ser o código em uso assim que a promoção para `backend/` estiver completa. Isso evita perder o histórico do que foi testado com publicação real.
 
 ## Migração futura para repositório próprio
 
-Quando a aplicação sair da fase de protótipo (ver `DECISOES.md` #1), este diretório migra para `valandro-social-media/`, seguindo a estrutura de repositório de `PADRAO_TECNOLOGICO_VALANDRO.md` §3 — histórico de commits e decisões documentadas aqui devem acompanhar a migração.
+A V1 é o gatilho que `DECISOES.md` #1 já previa para reavaliar a migração para `valandro-social-media/`. **A validar**: migrar agora, antes de escrever o backend/frontend da V1 (repositório limpo desde o primeiro commit real), ou terminar a V1 dentro de `plataforma-valandro/social-media/` e migrar só quando ela estiver funcionando de ponta a ponta?
